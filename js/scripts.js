@@ -113,9 +113,12 @@ const download = (type) => {
     WHERE bbl IN (${selectedLotsString})
   `;
 
-    const apiCall = `https://${cartoOptions.carto_domain}/api/v2/sql?q=${SQL}&format=${type}&filename=selected_lots`;
+    cartoOptions.format = type;
 
-    window.open(apiCall, 'Download');
+    // window.open(apiCall, 'Download');
+    Carto.sql(SQL, cartoOptions).then(data => {
+      window.open(encodeURI(data))
+    });
   }
 }
 
