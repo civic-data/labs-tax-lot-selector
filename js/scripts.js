@@ -9,7 +9,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nbnljIiwiYSI6ImNpczF1MXdrdjA4MXcycXA4Z
 /* eslint-disable */
 const map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mapbox/light-v9', //hosted style id
+    //style: 'mapbox://styles/mapbox/light-v9', //hosted style id
+    style: '//raw.githubusercontent.com/NYCPlanning/labs-gl-style/master/data/style.json', //hosted style id
     center: [-73.98, 40.750768],
     zoom: 16,
     hash: true,
@@ -29,6 +30,7 @@ const selectedLots = {
 const updateUI = (selectedLots) => {
 
   // update the underlying data for the selection layer
+  //console.log('selectedLots',selectedLots.length);
   map.getSource('selectedLots').setData(selectedLots);
 
   // update the count in the sidebar
@@ -47,6 +49,8 @@ const updateSelectedLots = (features) => {
     const { type, geometry, properties } = feature;
 
     // if the lot is not in the selection, push it, if it is, remove it
+    //console.log('lot',lot);
+    //console.log('selectedLots.features',selectedLots.features);
     const inSelection = selectedLots.features.find(lot => lot.properties.bbl === properties.bbl);
 
     if (inSelection === undefined) {
@@ -63,7 +67,23 @@ const updateSelectedLots = (features) => {
   updateUI(selectedLots);
 };
 
+const getLotsInList = (selectedLotsString) => {
+    //const selectedLotsString = selectedLotsArray.join(',');
+  const SQL = `
+    SELECT *
+    FROM support_mappluto
+    WHERE bbl IN (${selectedLotsString})
+  `;
+
+  Carto.sql(SQL, cartoOptions)
+    .then((d) => { 
+        updateSelectedLots(d.features); 
+    })
+    .catch((err) => {console.log('issue',err);alert('server issue. please try different input');});
+  ;
+}
 const getLotsInPolygon = (polygon) => {
+    //console.log('polygon',polygon);
   const SQL = `
     SELECT *
     FROM support_mappluto
@@ -77,7 +97,9 @@ const getLotsInPolygon = (polygon) => {
   `;
 
   Carto.sql(SQL, cartoOptions)
-    .then((d) => { updateSelectedLots(d.features); });
+    .then((d) => { 
+        updateSelectedLots(d.features); 
+    });
 }
 
 const download = (type) => {
@@ -85,6 +107,8 @@ const download = (type) => {
   const selectedLotsArray = selectedLots.features.map(lot => lot.properties.bbl);
   if (selectedLotsArray.length > 0) {
     const selectedLotsString = selectedLotsArray.join(',');
+
+    //console.log('selectedLotsArray',selectedLotsArray );
 
   const paperlistFields = ['borocode', 'block', 'lot', 'bbl', 'address', "'' AS \"Project\""];
   const allFields = ['borough','block','lot','cd','ct2010','cb2010','schooldist','council','zipcode','firecomp','policeprct','healtharea','sanitboro','sanitdistr','sanitsub','address','zonedist1','zonedist2','zonedist3','zonedist4','overlay1','overlay2','spdist1','spdist2','spdist3','ltdheight','splitzone','bldgclass','landuse','easements','ownertype','ownername','lotarea','bldgarea','comarea','resarea','officearea','retailarea','garagearea','strgearea','factryarea','otherarea','areasource','numbldgs','numfloors','unitsres','unitstotal','lotfront','lotdepth','bldgfront','bldgdepth','ext','proxcode','irrlotcode','lottype','bsmtcode','assessland','assesstot','exemptland','exempttot','yearbuilt','yearalter1','yearalter2','histdist','landmark','builtfar','residfar','commfar','facilfar','borocode','bbl','condono','tract2010','xcoord','ycoord','zonemap','zmcode','sanborn','taxmap','edesignum','appbbl','appdate','plutomapid','version','mappluto_f','shape_leng','shape_area'];
@@ -108,7 +132,7 @@ const download = (type) => {
   `;
 
   const SQL = `
-    SELECT ${fields} 
+    SELECT ${fields}
     FROM support_mappluto
     WHERE bbl IN (${selectedLotsString})
   `;
@@ -160,10 +184,12 @@ map.on('load', function () {
   }
 
   Carto.getVectorTileTemplate(mapConfig, cartoOptions).then((tileTemplate) => {
+      //console.log('tileTemplate', tileTemplate);
     map.addSource('pluto', {
       type: 'vector',
       tiles: [tileTemplate],
     });
+      //console.log('selectedLots', selectedLots);
 
     map.addSource('selectedLots', {
        type: 'geojson',
@@ -181,8 +207,12 @@ map.on('load', function () {
     // on click
     map.on('click', (e) => {
       if (draw.getMode() !== 'draw_polygon') {
+          //console.log('e.point',e.point);
         const features = map.queryRenderedFeatures(e.point, { layers: ['pluto'] });
         const uniqueFeatures = _.uniq(features, feature => feature.properties.bbl);
+
+        //console.log('features',features);
+        //console.log('uniqueFeatures',uniqueFeatures);
         if(uniqueFeatures.length > 0) updateSelectedLots(uniqueFeatures);
       }
     });
@@ -227,6 +257,11 @@ map.on('draw.create', (d) => {
 map.on('draw.modechange', () => {
   if (draw.getMode() === 'simple_select')  $('.selection-tool-draw').removeClass('active');
 
+});
+
+$('#bbl_list').on('input', () => {
+    //console.log('bbl_list', $('#bbl_list').val());
+    getLotsInList( $('#bbl_list').val());
 });
 
 $('.selection-tool-draw').on('click', () => {

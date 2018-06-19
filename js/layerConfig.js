@@ -84,7 +84,8 @@ const layerConfig = { // eslint-disable-line
     type: 'fill',
     source: 'selectedLots',
     paint: {
-      'fill-color': 'rgba(217, 216, 1, 1)',
+      //'fill-color': 'rgba(217, 216, 1, 1)',
+      'fill-color': 'rgba(217, 0, 1, 1)',
       'fill-outline-color': 'rgba(255, 255, 255, 1)',
     },
   },

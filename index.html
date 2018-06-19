@@ -21,9 +21,9 @@
       <header role="banner">
         <div class="grid-x grid-padding-x">
           <div class="branding cell auto">
-            <a class="dcp-link" href="http://www1.nyc.gov/site/planning/index.page"><img class="dcp-logo" src="https://raw.githubusercontent.com/NYCPlanning/logo/master/dcp_logo_772.png" alt="NYC Planning"></a>
+            <a class="dcp-link" href="http://www1.nyc.gov/site/planning/index.page"><img class="dcp-logo" src="https://raw.githubusercontent.com/NYCPlanning/logo/master/xdcp_logo_772.png" alt="NYC Planning"></a>
             <a href="." class="site-name">
-              Tax Lot Selector
+              Tax Lot Selector (unofficial)
             </a>
           </div>
           <div class="cell shrink show-for-large">
@@ -48,6 +48,12 @@
         <p><i aria-hidden="true" class="fa fa-hand-pointer-o"></i> Click individual lots to select or unselect, or use the draw tool to select a custom polygon.</p>
 
         <button class="selection-tool-draw button small gray text-orange "><i aria-hidden="true" class="fa fa-pencil-square-o"></i> Draw</button>
+        <div class="callout">
+        <label for="bbl_list">Borough, Block, Lot list (comma delimited) (e.g., 3072200070,3072200055)</label>
+        <!-- <input id="bbl_list" oninput="console.log(this.value)"></input> -->
+        <!-- <input id="bbl_list"></input> -->
+        <textarea id="bbl_list"></textarea>
+        </div>
 
         <div class="callout">
           <h3><span id="selected-count">0</span> lots selected</h3>
