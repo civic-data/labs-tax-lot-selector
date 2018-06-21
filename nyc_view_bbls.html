@@ -40,6 +40,7 @@
 <body>
      <label for="bbl_list">Borough, Block, Lot list (comma delimited) (e.g., 3072200070,3072200055)</label>
      <input id="bbl_list" oninput="startup(this.value.split(','));logdata(this.value);">
+     <input id="share">
 <div id='map'></div>
 <script>
 function logdata(parm){
@@ -49,6 +50,7 @@ db.collection("log").add({
 })
 .then(function(docRef) {
     console.log("Document written with ID: ", docRef.id);
+    document.getElementById('share').value=window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '')+"?"+docRef.id;
 })
 .catch(function(error) {
     console.error("Error adding document: ", error);

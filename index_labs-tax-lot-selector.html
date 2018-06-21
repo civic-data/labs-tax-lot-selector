@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.0/mapbox-gl-geocoder.css" type="text/css" />
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v0.19.0/mapbox-gl-draw.css" type="text/css"/>
+    <link rel="stylesheet" href="css/labs-foundation.css">
+    <link rel="stylesheet" href="css/dcp.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- BEGIN TRACKJS -->
+    <script type="text/javascript">window._trackJs = { token: '021d694d30524212979b729736656f55' };</script>
+    <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121057364-1"></script>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+        gtag('config', 'UA-121057364-1');
+    </script>
+
+    <!-- END TRACKJS -->
+  </head>
+  <body>
+    <div class="site-header">
+      <header role="banner">
+        <div class="grid-x grid-padding-x">
+          <div class="branding cell auto">
+            <a class="dcp-link" href="http://www1.nyc.gov/site/planning/index.page"><img class="dcp-logo" src="https://raw.githubusercontent.com/NYCPlanning/logo/master/xdcp_logo_772.png" alt="NYC Planning"></a>
+            <a href="." class="site-name">
+              Tax Lot Selector (unofficial)
+            </a>
+          </div>
+          <div class="cell shrink show-for-large">
+            <nav role="navigation">
+              <ul class="vertical large-horizontal menu">
+                <li>
+                  <a href="#" data-toggle="modal" data-open="exampleModal1">Data</a>
+                </li>
+                <li>
+                  <a href="https://github.com/civic-data/labs-tax-lot-selector" target="_blank">Github (forked)</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+    </div>
+    <div class="main-grid grid-x">
+      <div id='sidebar' class='large-4 cell'>
+        <p>You can use this simple tool to quickly get a shapefile or CSV of tax lot data for a small part of the city.</p>
+
+        <p><i aria-hidden="true" class="fa fa-hand-pointer-o"></i> Click individual lots to select or unselect, or use the draw tool to select a custom polygon.</p>
+
+        <button class="selection-tool-draw button small gray text-orange "><i aria-hidden="true" class="fa fa-pencil-square-o"></i> Draw</button>
+        <div class="callout">
+        <label for="bbl_list">Borough, Block, Lot list (comma delimited) (e.g., 3072200070,3072200055)</label>
+        <!-- <input id="bbl_list" oninput="console.log(this.value)"></input> -->
+        <!-- <input id="bbl_list"></input> -->
+        <textarea id="bbl_list"></textarea>
+        </div>
+
+        <div class="callout">
+          <h3><span id="selected-count">0</span> lots selected</h3>
+          <a href="#" id="clear-button" class="warning button disabled"><span class="fa fa-times"></span> Clear Selection</a>
+        </div>
+        <div class="callout">
+          <h3>
+            Download
+          </h3>
+          <form>
+            <p>Please select download mode:</p>
+            <div>
+              <ul class="no-bullet">
+                <li>
+                  <input type="radio" id="contactChoice1"
+                   name="contact" value="email" checked onchange="window.downloadMode = 'paperless'">
+                  <label for="contactChoice1">Paperless Filing</label>
+                </li>
+                <li>
+                  <input type="radio" id="contactChoice3"
+                   name="contact" value="email" checked onchange="window.downloadMode = 'bbls'">
+                  <label for="contactChoice3">BBLs Only</label>
+                </li>
+
+                <li>
+                  <input type="radio" id="contactChoice2"
+                   name="contact" value="phone" onchange="window.downloadMode = 'all'">
+                  <label for="contactChoice2">All PLUTO Fields</label>
+                </li>
+              </ul>
+            </div>
+          </form>
+          <div class="button-group">
+            <a href="#" id="csv-download-button" class="success button disabled"><span class="fa fa-download"></span> CSV</a>
+            <a href="#" id="shp-download-button" class="success button disabled"><span class="fa fa-download"></span> SHP</a>
+          </div>
+        </div>
+      </div>
+
+      <div class='large-8 cell'>
+        <div id='map'></div>
+      </div>
+    </div>
+    <!-- Modal -->
+<!--     <div class="reveal" id="dataModal" data-reveal>
+      Modal
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Data</h4>
+      </div>
+      <div class="modal-body">
+        <h4>About the Data</h4>
+        <p>The geometries and attributes used in this tool come from MapPLUTO 16v2, an open data set available for download from the Department of City Planning's <a href="https://www1.nyc.gov/site/planning/data-maps/open-data.page">Bytes of the Big Apple</a>.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button" data-close data-dismiss="modal">Close</button>
+      </div>
+    </div> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.0/mapbox-gl-geocoder.min.js'></script>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v0.19.0/mapbox-gl-draw.js'></script>
+    <script src="https://use.fontawesome.com/46fa1fbe2f.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js" crossorigin="anonymous"></script>
+    <script src="js/layerConfig.js" type="text/babel"></script>
+    <script src="js/carto.js" type="text/babel"></script>
+    <script src="js/scripts.js" type="text/babel"></script>
+  </body>
+</html>
