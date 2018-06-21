@@ -40,7 +40,7 @@
 <body>
      <label for="bbl_list">Borough, Block, Lot list (comma delimited) (e.g., 3072200070,3072200055)</label>
      <input id="bbl_list" oninput="startup(this.value.split(','));logdata(this.value);">
-      Share: (copy and paste to share with others) <input id="share" onfocus="this.select();">
+      Share: (copy and paste to share with others) <input readonly id="share" onfocus="this.select();">
 <div id='map'></div>
 <script>
 function logdata(parm){
