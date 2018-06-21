@@ -12,8 +12,8 @@
     </style>
 </head>
 <body>
-    key:<input id="key">
-     | bbl list:<input id="input" oninput="startup(this.value.split(','));">
+     <label for="bbl_list">Borough, Block, Lot list (comma delimited) (e.g., 3072200070,3072200055)</label>
+     <input id="bbl_list" oninput="startup(this.value.split(','));">
 <div id='map'></div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoicGVyc29uYWxyZWFsZXN0YXRlMSIsImEiOiJjaW5kb2duMG4weGZsdmdrdjd5ZTJha3N6In0.dJaZdwb6R11O5g6fzjUomQ';
