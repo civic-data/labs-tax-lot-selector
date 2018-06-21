@@ -47,6 +47,7 @@ if (location.search && location.search.length > 1) {
     startup(urlparm);
 }
     function startup(urlparm){
+        var parm="";
     for (var item in urlparm) {
         //console.log(urlparm[item]);
         parm += "'" + urlparm[item] + "',";
