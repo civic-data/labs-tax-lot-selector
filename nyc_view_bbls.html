@@ -10,12 +10,51 @@
         body { margin:0; padding:0; }
         #map { position:absolute; top:30px; bottom:0; width:100%; }
     </style>
+    <!-- Firebase App is always required and must be first -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+
+    <!-- Add additional services you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-functions.js"></script>
+
+    <!-- Comment out (or don't include) services you don't want to use -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-storage.js"></script> -->
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDXlRRte8Qy9nUfI5DygammOJHGPFS9Vfg",
+    authDomain: "nyc-tax-lot-selector.firebaseapp.com",
+    databaseURL: "https://nyc-tax-lot-selector.firebaseio.com",
+    projectId: "nyc-tax-lot-selector",
+    storageBucket: "nyc-tax-lot-selector.appspot.com",
+    messagingSenderId: "1088006658667"
+  };
+  firebase.initializeApp(config);
+  var db = firebase.firestore();
+</script>
 </head>
 <body>
      <label for="bbl_list">Borough, Block, Lot list (comma delimited) (e.g., 3072200070,3072200055)</label>
-     <input id="bbl_list" oninput="startup(this.value.split(','));">
+     <input id="bbl_list" oninput="startup(this.value.split(','));logdata(this.value);">
 <div id='map'></div>
 <script>
+function logdata(parm){
+db.collection("log").add({
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    data: parm
+})
+.then(function(docRef) {
+    console.log("Document written with ID: ", docRef.id);
+})
+.catch(function(error) {
+    console.error("Error adding document: ", error);
+});
+}
+
 mapboxgl.accessToken = 'pk.eyJ1IjoicGVyc29uYWxyZWFsZXN0YXRlMSIsImEiOiJjaW5kb2duMG4weGZsdmdrdjd5ZTJha3N6In0.dJaZdwb6R11O5g6fzjUomQ';
 // pk.eyJ1IjoicGVyc29uYWxyZWFsZXN0YXRlMSIsImEiOiJjaW5kb2duMG4weGZsdmdrdjd5ZTJha3N6In0.dJaZdwb6R11O5g6fzjUomQ
 var map = new mapboxgl.Map({
