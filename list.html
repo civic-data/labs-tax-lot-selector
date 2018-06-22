@@ -3,13 +3,19 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title></title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <title>List NYC Maps</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=3,user-scalable=yes' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     <style>
         /*body { margin:0; padding:0; } */
-        #map { position:absolute; top:30px; bottom:0; width:100%; }
+
+        body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+        /*#map { position:absolute; top:30px; bottom:0; width:100%; } */
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
     </style>
     <!-- Firebase App is always required and must be first -->
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
@@ -43,6 +49,7 @@ function list1(){
 
     db.collection("log")
         .where("title", ">", "")
+        .orderBy("title", "asc")
     .get()
     .then(function(querySnapshot) {
     var links="";
