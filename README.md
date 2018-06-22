@@ -4,7 +4,7 @@ See (https://map.tidalforce.org) This application allow you to visualize any lis
 For example, see (https://map.tidalforce.org/?1pNFsY5rnHcsFEpLW2CJ) this a saved list of 
 [Article 7 open petitions](http://www.nyc.gov/html/taxcomm/html/petitions/petitions.shtml) and we want to see every property that is challenging their tax assessment on a map.  The process is enter any BBL list and a unique share link is generated for you that you can share with others.
 
-
+![image](https://user-images.githubusercontent.com/167614/41751274-76eb669e-758e-11e8-8adf-9199943a7ae3.png)
 
 # Forked from NYC Tax Lot Selector (BBL List Generator)
 See (https://nyc-tax-lot-selector.firebaseapp.com/index_labs-tax-lot-selector.html)
