@@ -8,7 +8,7 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     <style>
-        body { margin:0; padding:0; }
+        /*body { margin:0; padding:0; } */
         #map { position:absolute; top:30px; bottom:0; width:100%; }
     </style>
     <!-- Firebase App is always required and must be first -->
@@ -42,13 +42,14 @@
 function list1(){
 
     db.collection("log")
+        .where("title", ">", "")
     .get()
     .then(function(querySnapshot) {
     var links="";
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
             //console.log(doc.id, " => ", doc.data().data.length, doc.data());
-            if(doc.data().title)
+            //if(doc.data().title)
             {
             //links+=  "<a target='_blank' href='" + window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '')+ "?"+doc.data().id+ "'>"+doc.data().title+" " +doc.data().data.length+" " + doc.data().id+"</a> | ";
             links+=  "<a target='_blank' href='" + window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '')+ "?"+doc.data().id+ "'>"+doc.data().title+"</a> | ";
