@@ -1,5 +1,13 @@
+# Inspired by NYC Tax Lot Selector (BBL List Generator)
+See (https://map.tidalforce.org) This application allow you to visualize any list of unique property identifiers for New York City property (This is what the NYC sites call the Borough, Block and Lot number or BBL for short)
+
+For example, see (https://map.tidalforce.org/?1pNFsY5rnHcsFEpLW2CJ) this a saved list of 
+[Article 7 open petitions](http://www.nyc.gov/html/taxcomm/html/petitions/petitions.shtml) and we want to see every property that is challenging their tax assessment on a map.  The process is enter any BBL list and a unique share link is generated for you that you can share with others.
+
+![image](https://user-images.githubusercontent.com/167614/41751274-76eb669e-758e-11e8-8adf-9199943a7ae3.png)
+
 # Forked from NYC Tax Lot Selector (BBL List Generator)
-See (https://nyc-tax-lot-selector.firebaseapp.com)
+See (https://nyc-tax-lot-selector.firebaseapp.com/index_labs-tax-lot-selector.html)
 
 If you want to see a large list of Borough, Block and Lots (BBLs) you can paste them into the input area.
 
