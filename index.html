@@ -53,12 +53,15 @@ function list(){
 
     db.collection("log")
     .get()
+        .where("title", ">", "")
+        .orderBy("title", "asc")
     .then(function(querySnapshot) {
     var links="";
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data().data.length, doc.data());
-            if(doc.data().title){
+            // if(doc.data().title)
+            {
             links+=  
             //console.log(
                      "<a href='"
