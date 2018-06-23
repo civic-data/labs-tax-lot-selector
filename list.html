@@ -50,8 +50,8 @@ function list1(){
     db.collection("log")
         .where("title", ">", "")
         .orderBy("title", "asc")
-    .get()
-    .then(function(querySnapshot) {
+    // .get() .then
+    .onSnapshot(function(querySnapshot) {
     var links="";
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
@@ -64,8 +64,8 @@ function list1(){
             //startup(doc.data().data.split(","));
         });
         document.getElementById('links').innerHTML=links;
-    })
-    .catch(function(error) {
+    }),
+    (function(error) {
         console.log("Error getting documents: ", error);
     });
 }

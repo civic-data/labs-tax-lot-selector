@@ -51,11 +51,11 @@
 <script>
 function list(){
 
+    //.get().then(function(querySnapshot) {
     db.collection("log")
         .where("title", ">", "")
         .orderBy("title", "asc")
-    .get()
-    .then(function(querySnapshot) {
+        .onSnapshot(function(querySnapshot) {
     var links="";
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
@@ -63,7 +63,6 @@ function list(){
             // if(doc.data().title)
             {
             links+=  
-            //console.log(
                      "<a href='"
                      +
                      window.location.protocol + "//" + window.location.hostname 
@@ -76,7 +75,7 @@ function list(){
         });
         document.getElementById('links').innerHTML=links;
     })
-    .catch(function(error) {
+    ,(function(error) {
         console.log("Error getting documents: ", error);
     });
 }
@@ -208,6 +207,7 @@ if (location.search && location.search.length > 1) {
         })
         .catch(function(error) {
             console.log(error);
+            alert('Server issue, please try again with different input');
         });
 }
 
