@@ -52,9 +52,9 @@
 function list(){
 
     db.collection("log")
-    .get()
         .where("title", ">", "")
         .orderBy("title", "asc")
+    .get()
     .then(function(querySnapshot) {
     var links="";
         querySnapshot.forEach(function(doc) {
