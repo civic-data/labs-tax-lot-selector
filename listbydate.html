@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>List NYC Maps</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=3,user-scalable=yes' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        /*body { margin:0; padding:0; } */
+
+        body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+        /*#map { position:absolute; top:30px; bottom:0; width:100%; } */
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
+    </style>
+    <!-- Firebase App is always required and must be first -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+
+    <!-- Add additional services you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-functions.js"></script>
+
+    <!-- Comment out (or don't include) services you don't want to use -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-storage.js"></script> -->
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDXlRRte8Qy9nUfI5DygammOJHGPFS9Vfg",
+    authDomain: "nyc-tax-lot-selector.firebaseapp.com",
+    databaseURL: "https://nyc-tax-lot-selector.firebaseio.com",
+    projectId: "nyc-tax-lot-selector",
+    storageBucket: "nyc-tax-lot-selector.appspot.com",
+    messagingSenderId: "1088006658667"
+  };
+  firebase.initializeApp(config);
+  var db = firebase.firestore();
+</script>
+<script>
+
+function list1(){
+
+    db.collection("log")
+        //.where("title", ">", "")
+        .orderBy("timestamp", "desc")
+    .get()
+    .then(function(querySnapshot) {
+    var links="";
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            //console.log(doc.id, " => ", doc.data().data.length, doc.data());
+            //if(doc.data().title)
+            {
+                links+=  "<a target='_blank' href='" + window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '')+ "?"+ doc.data().id+ "'>"+doc.data().timestamp + " " + doc.data().title+" " +doc.data().data.length+" " + doc.data().id+"</a> <br>";
+            //links+=  "<a target='_blank' href='" + window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '')+ "?"+doc.data().id+ "'>"+doc.data().title+"</a> | ";
+            }
+            //startup(doc.data().data.split(","));
+        });
+        document.getElementById('links').innerHTML=links;
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+}
+
+list1();
+
+</script>
+</head>
+<body>
+     <span id="links"></span>
+
+
+</body>
+</html>
