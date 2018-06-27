@@ -80,6 +80,26 @@ fetch(myRequest)
 return response.json()
 }).then(function(json) {
 console.log('myresponse1',json);
+    var arrname =  ["year", "owner", "tax"];
+    var schemakeys = [];
+    var map_schema = {};
+    var counter=0;
+    for (item in json.schema.fields) {
+        schemakeys.push(json.schema.fields[item]);
+	map_schema[json.schema.fields[item].name] = counter++;
+    }
+    for (item2 in json.rows) {
+        newarr = [];
+
+
+        for (item3 in json.rows[item2].f) {
+            for (itemx1 in arrname) {
+
+                    console.log('debug',schemakeys[item3]);
+            }
+        }
+    }
+
 });
 
 }
