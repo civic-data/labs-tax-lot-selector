@@ -86,17 +86,19 @@ console.log('myresponse1',json);
     var counter=0;
     for (item in json.schema.fields) {
         schemakeys.push(json.schema.fields[item]);
-	map_schema[json.schema.fields[item].name] = counter++;
+	    map_schema[json.schema.fields[item].name] = counter++;
     }
     for (item2 in json.rows) {
-        newarr = [];
-
-
+                    //console.log('debug',json.rows[item2]);
         for (item3 in json.rows[item2].f) {
-            for (itemx1 in arrname) {
-
-                    console.log('debug',schemakeys[item3]);
-            }
+                    if (schemakeys[item3].name === "address" 
+                            //|| 
+                        //schemakeys[item3].name === "year" || 
+                        //schemakeys[item3].name === "assessed"  
+                            ) {
+                        //console.log('debug2',schemakeys[item3].name,json.rows[item2].f[item3].v);
+                        window.location='https://www.google.com/search?q='+ json.rows[item2].f[item3].v.replace(' ','+');
+                    }
         }
     }
 
@@ -171,7 +173,7 @@ map.addControl(new mapboxgl.NavigationControl());
 map.on('click', 'data-items', function(e) {
     new mapboxgl.Popup()
         .setLngLat(e.lngLat)
-        .setHTML("<a href=\"javascript:websearch('"+ e.features[0].properties.BBL + "')\">Web Search</a> History: <a target=\"_blank\" href=\"https://tax.tidalforce.org/#search/" + e.features[0].properties.BBL + "\"> summary: " + e.features[0].properties.BBL + "</a> | <a target=\"_blank\" href=\"https://taxhistory.brooklyncoop.org/view1/" + e.features[0].properties.BBL + "\"> details: " + e.features[0].properties.BBL + "</a>")
+        .setHTML("<a target="_blank" href=\"javascript:websearch('"+ e.features[0].properties.BBL + "')\">Web Search</a> History: <a target=\"_blank\" href=\"https://tax.tidalforce.org/#search/" + e.features[0].properties.BBL + "\"> summary: " + e.features[0].properties.BBL + "</a> | <a target=\"_blank\" href=\"https://taxhistory.brooklyncoop.org/view1/" + e.features[0].properties.BBL + "\"> details: " + e.features[0].properties.BBL + "</a>")
         .addTo(map);
 });
 
