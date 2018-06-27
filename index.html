@@ -173,7 +173,7 @@ map.addControl(new mapboxgl.NavigationControl());
 map.on('click', 'data-items', function(e) {
     new mapboxgl.Popup()
         .setLngLat(e.lngLat)
-        .setHTML("<a target="_blank" href=\"javascript:websearch('"+ e.features[0].properties.BBL + "')\">Web Search</a> History: <a target=\"_blank\" href=\"https://tax.tidalforce.org/#search/" + e.features[0].properties.BBL + "\"> summary: " + e.features[0].properties.BBL + "</a> | <a target=\"_blank\" href=\"https://taxhistory.brooklyncoop.org/view1/" + e.features[0].properties.BBL + "\"> details: " + e.features[0].properties.BBL + "</a>")
+        .setHTML("<a target=\"_blank\" href=\"javascript:websearch('"+ e.features[0].properties.BBL + "')\">Web Search</a> History: <a target=\"_blank\" href=\"https://tax.tidalforce.org/#search/" + e.features[0].properties.BBL + "\"> summary: " + e.features[0].properties.BBL + "</a> | <a target=\"_blank\" href=\"https://taxhistory.brooklyncoop.org/view1/" + e.features[0].properties.BBL + "\"> details: " + e.features[0].properties.BBL + "</a>")
         .addTo(map);
 });
 
