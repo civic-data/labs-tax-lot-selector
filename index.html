@@ -51,6 +51,38 @@
       <a href="/list.html"><b>List</b></a> | <span id="links"></span>
 <div id='map'></div>
 <script>
+function websearch(parm){
+//// curl 'https://cityregister.appspot.com/_ah/api/cityregister/v1/getdata1simple?input=3016310019' -H 'origin: https://tax.tidalforce.org' -H 'accept-encoding: gzip, deflate, br' -H 'accept-language: en-US,en;q=0.9' -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36' -H 'accept: */*' -H 'referer: https://tax.tidalforce.org/' -H 'authority: cityregister.appspot.com' --compressed
+//    fetch('https://cityregister.appspot.com/_ah/api/cityregister/v1/getdata1simple?input='+parm
+//    ).then(function(response) {
+//            var contentType = response.headers.get("content-type");
+//            if (contentType && contentType.includes("application/json")) {
+//                //console.log(response);
+//                return response.json();
+//            }
+//            throw new TypeError("Oops, we haven't got JSON!");
+//        })
+//        .then(function(json) {
+//            //console.log('2', json); /* process your JSON further */
+//            var result0=JSON.parse(json.message);
+//            console.log('3', result0); /* process your JSON further */
+//            console.log('3', result0.status); /* process your JSON further */
+//            if (result0.status === "OK"){
+//                console.log('3', result0.results[0].response['giStreetName2'], result0.results[0].response['giStreetName2']); /* process your JSON further */
+//            }
+//
+//    });
+myRequest = "https://script.google.com/macros/s/AKfycbw9ORCRrSEbB24DtVwSHwKCDfBGJUQA-CsmbWhVZ4LDA6mAxnc/exec?type=startbbls.json&bbl=" + (parm);
+//console.log('myrequest1',myRequest);
+fetch(myRequest)
+
+.then(function(response) {
+return response.json()
+}).then(function(json) {
+console.log('myresponse1',json);
+});
+
+}
 function list(){
 
     //.get().then(function(querySnapshot) {
@@ -119,7 +151,7 @@ map.addControl(new mapboxgl.NavigationControl());
 map.on('click', 'data-items', function(e) {
     new mapboxgl.Popup()
         .setLngLat(e.lngLat)
-        .setHTML("History: <a target=\"_blank\" href=\"https://tax.tidalforce.org/#search/" + e.features[0].properties.BBL + "\"> summary: " + e.features[0].properties.BBL + "</a> | <a target=\"_blank\" href=\"https://taxhistory.brooklyncoop.org/view1/" + e.features[0].properties.BBL + "\"> details: " + e.features[0].properties.BBL + "</a>")
+        .setHTML("<a href=\"javascript:websearch('"+ e.features[0].properties.BBL + "')\">Web Search</a> History: <a target=\"_blank\" href=\"https://tax.tidalforce.org/#search/" + e.features[0].properties.BBL + "\"> summary: " + e.features[0].properties.BBL + "</a> | <a target=\"_blank\" href=\"https://taxhistory.brooklyncoop.org/view1/" + e.features[0].properties.BBL + "\"> details: " + e.features[0].properties.BBL + "</a>")
         .addTo(map);
 });
 
