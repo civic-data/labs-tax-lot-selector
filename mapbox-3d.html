@@ -39,6 +39,7 @@ map.on('click', 'pluto-1f4p9t', function(e) {
         .setHTML(JSON.stringify(e.features[0].properties))
         .addTo(map);
 });
+
 map.on('click', '3d-buildings', function(e) {
     console.log('QQQ 3d-buildings click:', e);
     new mapboxgl.Popup()
@@ -61,12 +62,12 @@ map.on('load', function() {
 
     var labelLayerId;
     for (var i = 0; i < layers.length; i++) {
+        //console.log('QQQ layer:',layers[i]);
         if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
             labelLayerId = layers[i].id;
             break;
         }
     }
-
     map.addLayer({
         'id': '3d-buildings',
         'source': 'composite',
