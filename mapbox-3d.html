@@ -6,6 +6,8 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -27,6 +29,28 @@ var map = new mapboxgl.Map({
     pitch: 45,
     bearing: -17.6,
     container: 'map'
+});
+map.addControl(new MapboxGeocoder({ accessToken: mapboxgl.accessToken }));
+map.addControl(new mapboxgl.NavigationControl());
+map.on('click', 'pluto-1f4p9t', function(e) {
+    console.log('QQQ pluto click:', e);
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(JSON.stringify(e.features[0].properties))
+        .addTo(map);
+});
+map.on('click', '3d-buildings', function(e) {
+    console.log('QQQ 3d-buildings click:', e);
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(JSON.stringify(e.features[0].properties))
+        .addTo(map);
+    /*
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML("<a target=\"_blank\" href=\"javascript:websearch('"+ e.features[0].properties.BBL + "')\">Web Search</a> History: <a target=\"_blank\" href=\"https://tax.tidalforce.org/#search/" + e.features[0].properties.BBL + "\"> summary: " + e.features[0].properties.BBL + "</a> | <a target=\"_blank\" href=\"https://taxhistory.brooklyncoop.org/view1/" + e.features[0].properties.BBL + "\"> details: " + e.features[0].properties.BBL + "</a>")
+        .addTo(map);
+        */
 });
 
 // The 'building' layer in the mapbox-streets vector source contains building-height
